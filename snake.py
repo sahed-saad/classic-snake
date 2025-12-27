@@ -94,8 +94,15 @@ def start_game():
             display_score(score)
         if outside_window():
             game_over_turtle = game_over()
+
+            yes_button = t.Turtle()
+            yes_button.shape('circle')
+            yes_button.color('green')
+            yes_button.shapesize(3)
+            yes_button.penup()
+            yes_button.goto(-80, -100)
+            yes_button.write('YES', align='center', font=('Arial', 16, 'bold'))
             
-           
             no_button = t.Turtle()
             no_button.shape('circle')
             no_button.color('red')
