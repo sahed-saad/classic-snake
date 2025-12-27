@@ -49,9 +49,11 @@ def outside_window():
 def game_over():
     snake.color('yellow')
     apple.color('yellow')
-    t.penup()
-    t.hideturtle()
-    t.write('GAME OVER!', align='center', font=('Times New Roman', 35, 'normal'))
+    game_over_turtle = t.Turtle()
+    game_over_turtle.penup()
+    game_over_turtle.hideturtle()
+    game_over_turtle.write('GAME OVER!', align='center', font=('Times New Roman', 35, 'normal'))
+    return game_over_turtle
 
 def display_score(current_score):
     score_turtle.clear()
@@ -74,6 +76,7 @@ def start_game():
     game_started = True
     score = 0
     text_turtle.clear()
+    score_turtle.clear()  # clear old score
     snake_speed = 2
     snake_length = 3
     snake.shapesize(1, snake_length, 1)
@@ -84,13 +87,42 @@ def start_game():
         snake.forward(snake_speed)
         if snake.distance(apple) < 20:
             place_apple()
-            snake_length = snake_length + 1
+            snake_length = snake_length + 0.5
             snake.shapesize(1, snake_length, 1)
-            snake_speed = snake_speed + 1
+            snake_speed = snake_speed + 0.33
             score = score + 10
             display_score(score)
         if outside_window():
-            game_over()
+            game_over_turtle = game_over()
+            
+           
+            no_button = t.Turtle()
+            no_button.shape('circle')
+            no_button.color('red')
+            no_button.shapesize(3)
+            no_button.penup()
+            no_button.goto(80, -100)
+            no_button.write('NO', align='center', font=('Arial', 16, 'bold'))
+            
+            def restart(x, y):
+                global game_started
+                game_started = False
+                yes_button.clear()
+                yes_button.hideturtle()
+                no_button.clear()
+                no_button.hideturtle()
+                game_over_turtle.clear()
+                snake.goto(0, 0)
+                snake.setheading(0)
+                snake.color('orange')
+                apple.color('red')
+                start_game()
+            
+            def quit_game(x, y):
+                t.bye()
+            
+            yes_button.onclick(restart)
+            no_button.onclick(quit_game)
             break
 
 def move_up():
