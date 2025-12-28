@@ -52,7 +52,7 @@ def game_over():
     game_over_turtle = t.Turtle()
     game_over_turtle.penup()
     game_over_turtle.hideturtle()
-    game_over_turtle.write('GAME OVER!', align='center', font=('Times New Roman', 35, 'normal'))
+    game_over_turtle.write('GAME OVER ! ! !\nWanna Play Again?', align='center', font=('Times New Roman', 35, 'normal'))
     return game_over_turtle
 
 def display_score(current_score):
@@ -71,29 +71,49 @@ def place_apple():
 
 def start_game():
     global game_started
+
     if game_started:
         return
+
     game_started = True
     score = 0
+
     text_turtle.clear()
     score_turtle.clear()  # clear old score
+
     snake_speed = 2
     snake_length = 3
     snake.shapesize(1, snake_length, 1)
     snake.showturtle()
+
     display_score(score)
     place_apple()
-    while True:
+
+    while game_started:
         snake.forward(snake_speed)
+
         if snake.distance(apple) < 20:
             place_apple()
-            snake_length = snake_length + 0.5
+            snake_length = snake_length + 0.33
             snake.shapesize(1, snake_length, 1)
             snake_speed = snake_speed + 0.33
-            score = score + 10
+            score = score +20
             display_score(score)
+
         if outside_window():
             game_over_turtle = game_over()
+
+            yes_text = t.Turtle()
+            yes_text.hideturtle()
+            yes_text.penup()
+            yes_text.goto(-80, -153)
+            yes_text.write('YES', align='center', font=('Arial', 16, 'bold'))
+
+            no_text = t.Turtle()
+            no_text.hideturtle()
+            no_text.penup()
+            no_text.goto(80, -153)
+            no_text.write('NO', align='center', font=('Arial', 16, 'bold'))
 
             yes_button = t.Turtle()
             yes_button.shape('circle')
@@ -101,19 +121,21 @@ def start_game():
             yes_button.shapesize(3)
             yes_button.penup()
             yes_button.goto(-80, -100)
-            yes_button.write('YES', align='center', font=('Arial', 16, 'bold'))
-            
+
             no_button = t.Turtle()
             no_button.shape('circle')
             no_button.color('red')
             no_button.shapesize(3)
             no_button.penup()
             no_button.goto(80, -100)
-            no_button.write('NO', align='center', font=('Arial', 16, 'bold'))
-            
+
             def restart(x, y):
                 global game_started
                 game_started = False
+                yes_text.clear()
+                yes_text.hideturtle()
+                no_text.clear()
+                no_text.hideturtle()
                 yes_button.clear()
                 yes_button.hideturtle()
                 no_button.clear()
@@ -124,10 +146,12 @@ def start_game():
                 snake.color('orange')
                 apple.color('red')
                 start_game()
-            
+
             def quit_game(x, y):
+                global game_started
+                game_started = False
                 t.bye()
-            
+
             yes_button.onclick(restart)
             no_button.onclick(quit_game)
             break
