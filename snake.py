@@ -1,4 +1,4 @@
-import random
+import random, sys
 import turtle as t
 
 t.bgcolor('yellow')
@@ -150,7 +150,7 @@ def start_game():
             def quit_game(x, y):
                 global game_started
                 game_started = False
-                t.bye()
+                sys.exit()
 
             yes_button.onclick(restart)
             no_button.onclick(quit_game)
